@@ -67,9 +67,9 @@ col1, col2 = st.columns(2)
 with col1:
     balance = st.number_input("Investable Assets ($)", value=500000, step=10000)
     firm_options = [
-        "Most Common (1.00% - Bank Mutual Funds)",
-        "High (1.25% - Mainstream Brokers)",
-        "Low (0.75% - High Net Worth / F-Class)"
+        "Most Common (1.00% - Typical Bank Mutual Funds)",
+        "Higher (1.25% - Mainstream Brokers)",
+        "Lower (0.75% - High Net Worth)"
     ]
     firm_type = st.selectbox("Current Trailing Commission Structure", options=firm_options, index=0)
 
@@ -91,6 +91,7 @@ growth_rate = 1.06      # 6% Market Return
 inflation = 1.02        # 2% Inflation
 plan_fee = 1000         # Triennial Plan Cost
 review_fee = 250        # Annual Review Cost
+hst_rate = 1.13         # 13% HST
 
 # Calculation Loop
 data = []
@@ -111,11 +112,11 @@ for year in range(horizon + 1):
         # 2. AUM Fee (Percentage)
         aum_bal = aum_bal * (1 - trail)
         
-        # 3. Advice Fee (Flat)
+        # 3. Advice Fee (Flat + HST)
         if include_reviews:
-            adv_bal -= curr_rev_fee
+            adv_bal -= (curr_rev_fee * hst_rate)
         if year % 3 == 0:
-            adv_bal -= curr_plan_fee
+            adv_bal -= (curr_plan_fee * hst_rate)
             
         # 4. Inflation on Fees
         curr_plan_fee *= inflation
@@ -180,7 +181,7 @@ with st.expander("📝 View Calculation Assumptions"):
     * **Inflation:** {round((inflation-1)*100)}% annually (applied to Advice fees).
     * **Trailing Commissions:** Applied annually to the full account balance.
     * **Advice-Only Costs:**
-        * Initial/Triennial Plan: ${plan_fee:,.0f} (adjusted for inflation).
-        * Annual Review: ${review_fee:,.0f} (adjusted for inflation, optional).
+        * Initial/Triennial Plan: ${plan_fee:,.0f} (indexed to inflation) + 13% HST.
+        * Annual Review: ${review_fee:,.0f} (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
