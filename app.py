@@ -4,7 +4,7 @@ import altair as alt
 
 # 1. PAGE CONFIGURATION
 st.set_page_config(
-    page_title="Make The Switch",
+    page_title="Making the Switch?",
     page_icon="🛡️",
     layout="centered"
 )
@@ -45,12 +45,16 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 3. HEADER & EDUCATION
-st.title("🛡️ Make The Switch")
+st.title("🛡️ Making the Switch?")
 
 st.markdown("""
 **What does "Making the Switch" mean?** Most Canadian investors pay for advice via **Assets Under Management (AUM)**. This means you pay a percentage of your portfolio (often 1% or more) every single year. As your wealth grows, your fee grows—even if the service stays the same.
 
 **The Advice-Only Model** treats financial planning like a professional service (like a CPA or Lawyer). You pay a flat fee for the advice you receive, decoupling the cost from your net worth. 
+""")
+
+st.info("""
+**How this tool works:** This chart demonstrates the stark difference between the two models from a cost perspective over time, assuming the **exact same level of advice** is received. Use it to determine your "breakeven point"—the moment where switching to an advice-only model starts putting significantly more money back in your pocket.
 """)
 
 st.divider()
@@ -59,7 +63,7 @@ st.divider()
 col1, col2 = st.columns(2)
 
 with col1:
-    balance = st.number_input("Investable Assets ($)", value=630000, step=10000)
+    balance = st.number_input("Investable Assets ($)", value=500000, step=10000)
     firm_options = [
         "Most Common (1.00% - Bank Mutual Funds)",
         "High (1.25% - Mainstream Brokers)",
@@ -83,8 +87,8 @@ else: trail = 0.01  # Default to 1.00%
 # Assumptions
 growth_rate = 1.06      # 6% Market Return
 inflation = 1.02        # 2% Inflation
-plan_fee = 3500         # Triennial Plan Cost
-review_fee = 200        # Annual Review Cost
+plan_fee = 1000         # Triennial Plan Cost (Updated)
+review_fee = 250        # Annual Review Cost (Updated)
 
 # Calculation Loop
 data = []
