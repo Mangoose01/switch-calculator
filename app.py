@@ -48,13 +48,13 @@ st.markdown("""
 st.title("🛡️ Making the Switch?")
 
 st.markdown("""
-**What does "Making the Switch" mean?** Most Canadian investors pay for advice via **Assets Under Management (AUM)**. This means you pay a percentage of your portfolio (often 1% or more) every single year. As your wealth grows, your fee grows—even if the service stays the same.
+**What does "Making the Switch" mean?** Most Canadian investors pay for advice via **Assets Under Management (AUM)**. This means you pay a percentage of your portfolio (often 1% or more) every single year. As your wealth grows, your fee grows, even if the service stays the same.
 
-**The Advice-Only Model** treats financial planning like a professional service (like a CPA or Lawyer). You pay a flat fee for the advice you receive, decoupling the cost from your net worth. 
+**The Advice-Only Model** treats financial planning like a professional service (like a CPA or Lawyer). You pay a flat fee for the advice you receive, decoupling the cost from your the value of your portfolio (and instead aligning it with the complexity of your situation)
 """)
 
 st.info("""
-**How this tool works:** This chart demonstrates the stark difference between the two models from a cost perspective over time, assuming the **exact same level of advice** is received. Use it to determine your "breakeven point"—the moment where switching to an advice-only model starts putting significantly more money back in your pocket.
+**How this tool works:** This chart demonstrates the stark difference between the two models from a cost perspective over time, assuming the **exact same level of advice** is received. Use it to determine your "breakeven point"—the moment where switching to an advice-only model starts putting significantly more money back in your pocket. It should be noted that the advice-only fee refenced in these calculation are reflective of non-complex financial plans, which the author estimates applies to 85% of individuals seeking to build a financial plan. More complex scnearios involving corporations, foreign tax obligations, many rental properties, etc. would very likely result in higher advice-only costs.
 """)
 
 st.divider()
@@ -182,3 +182,4 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: ${review_fee:,.0f} (adjusted for inflation, optional).
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
+
