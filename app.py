@@ -21,7 +21,7 @@ st.markdown("""
         footer {visibility: hidden;}
         
         /* Typography */
-        h1 { color: #1e293b; font-weight: 800; letter-spacing: -0.02em; padding-bottom: 10px; }
+        h1 { color: #1e293b; font-weight: 800; letter-spacing: -0.02em; padding-bottom: 0px; }
         h3 { color: #334155; font-size: 1.2rem; font-weight: 600; margin-top: 20px; }
         p { color: #475569; font-size: 1rem; line-height: 1.6; }
         
@@ -44,8 +44,12 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 3. HEADER & EDUCATION (Centered Title)
+# 3. HEADER & EDUCATION
+# Centered Title
 st.markdown("<h1 style='text-align: center;'>Making the Switch?</h1>", unsafe_allow_html=True)
+
+# ---> ADDED SPACER HERE <---
+st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
 
 st.markdown("""
 **What does "Making the Switch" mean?** Most Canadian investors pay for advice via **Assets Under Management (AUM)**. This means you pay a percentage of your portfolio (often 1% or more) every single year. As your wealth grows, your fee grows, even if the service stays the same.
@@ -67,9 +71,9 @@ col1, col2 = st.columns(2)
 with col1:
     balance = st.number_input("Investable Assets ($)", value=500000, step=10000)
     firm_options = [
-        "Most Common (1.00% - Typical Bank Mutual Funds)",
-        "Higher (1.25% - Mainstream Brokers)",
-        "Lower (0.75% - High Net Worth)"
+        "Most Common (1.00% - Bank Mutual Funds)",
+        "High (1.25% - Mainstream Brokers)",
+        "Low (0.75% - High Net Worth / F-Class)"
     ]
     firm_type = st.selectbox("Current Trailing Commission Structure", options=firm_options, index=0)
 
