@@ -5,7 +5,7 @@ import altair as alt
 # 1. PAGE CONFIGURATION
 st.set_page_config(
     page_title="Making the Switch?",
-    page_icon="🛡️",
+    page_icon="📈",
     layout="centered"
 )
 
@@ -40,21 +40,23 @@ st.markdown("""
         .stSelectbox label, .stNumberInput label { font-weight: 600; color: #475569; }
         
         /* Container Spacing */
-        .block-container { padding-top: 3rem; padding-bottom: 3rem; }
+        .block-container { padding-top: 2rem; padding-bottom: 3rem; }
     </style>
 """, unsafe_allow_html=True)
 
-# 3. HEADER & EDUCATION
-st.title("🛡️ Making the Switch?")
+# 3. HEADER & EDUCATION (Centered Title)
+st.markdown("<h1 style='text-align: center;'>Making the Switch?</h1>", unsafe_allow_html=True)
 
 st.markdown("""
 **What does "Making the Switch" mean?** Most Canadian investors pay for advice via **Assets Under Management (AUM)**. This means you pay a percentage of your portfolio (often 1% or more) every single year. As your wealth grows, your fee grows, even if the service stays the same.
 
-**The Advice-Only Model** treats financial planning like a professional service (like a CPA or Lawyer). You pay a flat fee for the advice you receive, decoupling the cost from your the value of your portfolio (and instead aligning it with the complexity of your situation)
+**The Advice-Only Model** treats financial planning like a professional service (like a CPA or Lawyer). You pay a flat fee for the advice you receive, decoupling the cost from the value of your portfolio and instead aligning it with the complexity of your situation.
 """)
 
 st.info("""
-**How this tool works:** This chart demonstrates the stark difference between the two models from a cost perspective over time, assuming the **exact same level of advice** is received. Use it to determine your "breakeven point"—the moment where switching to an advice-only model starts putting significantly more money back in your pocket. It should be noted that the advice-only fee refenced in these calculation are reflective of non-complex financial plans, which the author estimates applies to 85% of individuals seeking to build a financial plan. More complex scnearios involving corporations, foreign tax obligations, many rental properties, etc. would very likely result in higher advice-only costs.
+**How this tool works:** This chart demonstrates the stark difference between the two models from a cost perspective over time, assuming the **exact same level of advice** is received. Use it to determine your "breakeven point", the moment where switching to an advice-only model starts putting significantly more money back in your pocket.
+
+It should be noted that the advice-only fees (financial plan and annual reviews) referenced in these calculations are reflective of non-complex financial plans, which the author estimates applies to 85% of individuals seeking to build a financial plan. More complex scenarios involving corporations, foreign tax obligations, many rental properties, etc. would very likely result in higher advice-only costs.
 """)
 
 st.divider()
@@ -87,8 +89,8 @@ else: trail = 0.01  # Default to 1.00%
 # Assumptions
 growth_rate = 1.06      # 6% Market Return
 inflation = 1.02        # 2% Inflation
-plan_fee = 1000         # Triennial Plan Cost (Updated)
-review_fee = 250        # Annual Review Cost (Updated)
+plan_fee = 1000         # Triennial Plan Cost
+review_fee = 250        # Annual Review Cost
 
 # Calculation Loop
 data = []
@@ -182,4 +184,3 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: ${review_fee:,.0f} (adjusted for inflation, optional).
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
-
