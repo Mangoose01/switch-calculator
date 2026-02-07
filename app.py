@@ -14,7 +14,7 @@ st.markdown("""
     <style>
         /* 1. CONTAINER WIDTH ADJUSTMENT */
         .block-container {
-            max-width: 1100px;
+            max-width: 900px;
             padding-top: 2rem;
             padding-bottom: 3rem;
         }
@@ -199,5 +199,6 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: ${review_fee:,.0f} (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
+
 
 
