@@ -14,7 +14,7 @@ st.markdown("""
     <style>
         /* 1. CONTAINER WIDTH ADJUSTMENT */
         .block-container {
-            max-width: 900px;
+            max-width: 1000px;
             padding-top: 2rem;
             padding-bottom: 3rem;
         }
@@ -32,31 +32,7 @@ st.markdown("""
         h3 { color: #334155; font-size: 1.2rem; font-weight: 600; margin-top: 20px; }
         p { color: #475569; font-size: 1rem; line-height: 1.6; }
         
-        /* 5. METRIC ALIGNMENT (FORCE CENTER) */
-        div[data-testid="stMetricValue"] {
-            font-size: 4rem !important;
-            color: #10b981 !important; /* Green */
-            font-weight: 900;
-            text-align: center;
-            width: 100%;
-        }
-        div[data-testid="stMetricLabel"] {
-            text-align: center;
-            font-size: 1.1rem !important;
-            color: #64748b !important;
-            width: 100%;
-            justify-content: center;
-        }
-        div[data-testid="stMetric"] {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            margin: 0 auto;
-        }
-        
-        /* 6. INPUTS */
+        /* 5. INPUTS */
         .stSelectbox label, .stNumberInput label { font-weight: 600; color: #475569; }
     </style>
 """, unsafe_allow_html=True)
@@ -130,7 +106,6 @@ for year in range(horizon + 1):
         curr_plan_fee *= inflation
         curr_rev_fee *= inflation
 
-    # FIX: Renamed keys to be professional for any potential display
     data.append({"Year": year, "Portfolio Value": round(aum_bal), "Type": "Traditional AUM"})
     data.append({"Year": year, "Portfolio Value": round(adv_bal), "Type": "Advice-Only"})
     
@@ -149,7 +124,19 @@ final_adv = df_lines[(df_lines["Year"] == horizon) & (df_lines["Type"] == "Advic
 savings = final_adv - final_aum
 
 st.markdown("---")
-st.metric(label="Additional Wealth Retained", value=f"${savings:,.0f}")
+
+# 6. METRIC DISPLAY (CUSTOM HTML FIX)
+# This replaces the 'st.metric' call to guarantee perfect centering and size.
+st.markdown(f"""
+    <div style="text-align: center; margin-bottom: 20px;">
+        <div style="font-size: 1.4rem; color: #64748b; font-weight: 600; margin-bottom: 5px;">
+            Additional Wealth Retained
+        </div>
+        <div style="font-size: 4.5rem; color: #10b981; font-weight: 900; line-height: 1;">
+            ${savings:,.0f}
+        </div>
+    </div>
+""", unsafe_allow_html=True)
 
 # 7. PROFESSIONAL CHART (Locked & Fixed Tooltips)
 # Layer 1: Area (Disabled Tooltip)
@@ -157,7 +144,7 @@ area = alt.Chart(df_area).mark_area(opacity=0.15, color='#6366f1').encode(
     x=alt.X('Year', axis=alt.Axis(tickMinStep=2, grid=False)),
     y=alt.Y('Traditional AUM', axis=alt.Axis(format='$,.0f', title='Portfolio Value')),
     y2='Advice-Only',
-    tooltip=[] # <--- THIS DISABLES THE "WRONG" HOVER POPUP
+    tooltip=[] 
 )
 
 # Layer 2: Lines (Enabled Tooltip)
@@ -199,6 +186,3 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: ${review_fee:,.0f} (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
-
-
-
