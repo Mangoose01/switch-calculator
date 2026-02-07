@@ -49,8 +49,6 @@ st.markdown("""
 
 st.info("""
 **How this tool works:** This chart demonstrates the stark difference between the two models from a cost perspective over time, assuming the **exact same level of advice** is received. Use it to determine your "breakeven point", the moment where switching to an advice-only model starts putting significantly more money back in your pocket.
-
-It should be noted that the advice-only fees (financial plan and annual reviews) referenced in these calculations are reflective of non-complex financial plans, which the author estimates applies to 85% of individuals seeking to build a financial plan. More complex scenarios involving corporations, foreign tax obligations, many rental properties, etc. would very likely result in higher advice-only costs. See detailed assumptions made at the bottom of the page.
 """)
 
 st.divider()
@@ -73,6 +71,15 @@ with col2:
     st.write("") 
     include_reviews = st.checkbox("Include Annual Review Costs?", value=True)
 
+# --- NEW: CUSTOM FEE INPUTS ---
+# We use an expander to keep the UI clean, but allow customization if clicked.
+with st.expander("🔧 Customize Advice-Only Fees (Click to Edit)"):
+    f_col1, f_col2 = st.columns(2)
+    with f_col1:
+        plan_fee = st.number_input("Triennial Plan Fee ($)", value=1000, step=100, help="The cost of the initial plan and the update every 3 years.")
+    with f_col2:
+        review_fee = st.number_input("Annual Review Fee ($)", value=250, step=50, help="The cost of the optional maintenance review in off-years.")
+
 # 5. LOGIC ENGINE
 if "0.75%" in firm_type: trail = 0.0075
 elif "1.25%" in firm_type: trail = 0.0125
@@ -81,8 +88,6 @@ else: trail = 0.01
 # --- UPDATED CONSTANTS (Conservative 5% Growth) ---
 growth_rate = 1.05       # 5% Growth
 inflation = 1.025        # 2.5% Inflation on fees
-plan_fee = 1000          # Plan fee
-review_fee = 250         # Annual Review fee
 hst_rate = 1.13          # 13% HST
 
 data = []
@@ -90,8 +95,8 @@ area_data = []
 
 aum_bal = balance
 adv_bal = balance
-curr_plan_fee = plan_fee
-curr_rev_fee = review_fee
+curr_plan_fee = plan_fee # Takes value from the new input
+curr_rev_fee = review_fee # Takes value from the new input
 
 for year in range(horizon + 1):
     if year > 0:
@@ -183,15 +188,14 @@ final_chart = (area + lines).properties(
 st.altair_chart(final_chart, use_container_width=True)
 
 # 8. FOOTER
+# Updated to use the variables directly from the inputs
 with st.expander("📝 View Calculation Assumptions"):
     st.markdown(f"""
     This calculator uses conservative estimates to project long-term costs.
     * **Market Growth:** {round((growth_rate-1)*100)}% annually (compounded).
     * **Inflation:** {round((inflation-1)*100)}% annually (applied to Advice fees).
     * **Trailing Commissions:** Applied annually to the full account balance.
-    * **Advice-Only Costs:**
-        * Initial/Triennial Plan: ${plan_fee:,.0f} (indexed to inflation) + 13% HST.
-        * Annual Review: ${review_fee:,.0f} (indexed to inflation, optional) + 13% HST.
+    * **Advice-Only Costs:** * Initial/Triennial Plan: **${plan_fee:,.0f}** (indexed to inflation) + 13% HST.
+        * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
-
