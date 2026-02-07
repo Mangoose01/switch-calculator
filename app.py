@@ -50,7 +50,7 @@ st.markdown("""
 st.info("""
 **How this tool works:** This chart demonstrates the stark difference between the two models from a cost perspective over time, assuming the **exact same level of advice** is received. Use it to determine your "breakeven point", the moment where switching to an advice-only model starts putting significantly more money back in your pocket.
 
-It should be noted that the advice-only fees (financial plan and annual reviews) referenced in these calculations are reflective of non-complex financial plans, which the author estimates applies to 85% of individuals seeking to build a financial plan. More complex scenarios involving corporations, foreign tax obligations, many rental properties, etc. would very likely result in higher advice-only costs.
+It should be noted that the advice-only fees (financial plan and annual reviews) referenced in these calculations are reflective of non-complex financial plans, which the author estimates applies to 85% of individuals seeking to build a financial plan. More complex scenarios involving corporations, foreign tax obligations, many rental properties, etc. would very likely result in higher advice-only costs. See detailed assumptions made at the bottom of the page.
 """)
 
 st.divider()
@@ -61,9 +61,9 @@ col1, col2 = st.columns(2)
 with col1:
     balance = st.number_input("Investable Assets ($)", value=500000, step=10000)
     firm_options = [
-        "Most Common (1.00% - Bank Mutual Funds)",
-        "High (1.25% - Mainstream Brokers)",
-        "Low (0.75% - High Net Worth / F-Class)"
+        "Most Common (1.00% - Common Bank Mutual Funds)",
+        "High (1.25% - Mainstream Brokers - it sometimes includes investment management)",
+        "Low (0.75% - High Net Worth / Discounted Wealth Management)"
     ]
     firm_type = st.selectbox("Current Trailing Commission Structure", options=firm_options, index=0)
 
@@ -78,11 +78,12 @@ if "0.75%" in firm_type: trail = 0.0075
 elif "1.25%" in firm_type: trail = 0.0125
 else: trail = 0.01
 
-growth_rate = 1.06
-inflation = 1.02
-plan_fee = 1000
-review_fee = 250
-hst_rate = 1.13
+# --- UPDATED CONSTANTS (Conservative 5% Growth) ---
+growth_rate = 1.05       # 5% Growth
+inflation = 1.025        # 2.5% Inflation on fees
+plan_fee = 1000          # Plan fee
+review_fee = 250         # Annual Review fee
+hst_rate = 1.13          # 13% HST
 
 data = []
 area_data = []
@@ -94,15 +95,23 @@ curr_rev_fee = review_fee
 
 for year in range(horizon + 1):
     if year > 0:
+        # 1. Growth
         aum_bal = aum_bal * growth_rate
         adv_bal = adv_bal * growth_rate
+        
+        # 2. AUM Fee deduction (Percentage)
         aum_bal = aum_bal * (1 - trail)
         
+        # 3. Advice Fee deduction (Flat Fees + HST)
         if include_reviews:
+            # Annual Review Fee (Every Year)
             adv_bal -= (curr_rev_fee * hst_rate)
-        if year % 3 == 0:
+            
+        # Triennial Plan Fee (Year 1, 4, 7...)
+        if (year - 1) % 3 == 0:
             adv_bal -= (curr_plan_fee * hst_rate)
             
+        # 4. Inflation Adjustment
         curr_plan_fee *= inflation
         curr_rev_fee *= inflation
 
@@ -126,7 +135,6 @@ savings = final_adv - final_aum
 st.markdown("---")
 
 # 6. METRIC DISPLAY (CUSTOM HTML FIX)
-# This replaces the 'st.metric' call to guarantee perfect centering and size.
 st.markdown(f"""
     <div style="text-align: center; margin-bottom: 20px;">
         <div style="font-size: 1.4rem; color: #64748b; font-weight: 600; margin-bottom: 5px;">
@@ -186,3 +194,4 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: ${review_fee:,.0f} (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
+
