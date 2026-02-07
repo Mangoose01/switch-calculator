@@ -12,23 +12,30 @@ st.set_page_config(
 # 2. CUSTOM CSS (Professional Polish)
 st.markdown("""
     <style>
-        /* Force Clean White Background */
+        /* 1. CONTAINER WIDTH ADJUSTMENT */
+        .block-container {
+            max-width: 1000px; /* Adjust this number to control width */
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
+        
+        /* 2. COLORS & THEME */
         .stApp { background-color: #ffffff; color: #1e293b; }
         
-        /* Hide Streamlit Chrome */
+        /* 3. HIDE STREAMLIT UI */
         #MainMenu {visibility: hidden;}
         header {visibility: hidden;}
         footer {visibility: hidden;}
         
-        /* Typography */
+        /* 4. TYPOGRAPHY */
         h1 { color: #1e293b; font-weight: 800; letter-spacing: -0.02em; padding-bottom: 0px; }
         h3 { color: #334155; font-size: 1.2rem; font-weight: 600; margin-top: 20px; }
         p { color: #475569; font-size: 1rem; line-height: 1.6; }
         
-        /* Big Metric Style */
+        /* 5. METRICS */
         div[data-testid="stMetricValue"] {
             font-size: 4rem !important;
-            color: #10b981 !important; /* Green */
+            color: #10b981 !important;
             font-weight: 900;
             text-align: center;
         }
@@ -36,11 +43,8 @@ st.markdown("""
             text-align: center; font-size: 1.1rem !important; color: #64748b !important;
         }
         
-        /* Input Styling */
+        /* 6. INPUTS */
         .stSelectbox label, .stNumberInput label { font-weight: 600; color: #475569; }
-        
-        /* Container Spacing */
-        .block-container { padding-top: 2rem; padding-bottom: 3rem; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -189,3 +193,4 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: ${review_fee:,.0f} (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
+
