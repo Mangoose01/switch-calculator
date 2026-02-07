@@ -130,9 +130,16 @@ for year in range(horizon + 1):
         curr_plan_fee *= inflation
         curr_rev_fee *= inflation
 
+    # FIX: Renamed keys to be professional for any potential display
     data.append({"Year": year, "Portfolio Value": round(aum_bal), "Type": "Traditional AUM"})
     data.append({"Year": year, "Portfolio Value": round(adv_bal), "Type": "Advice-Only"})
-    area_data.append({"Year": year, "Traditional": round(aum_bal), "AdviceOnly": round(adv_bal)})
+    
+    # Wide format for the area chart
+    area_data.append({
+        "Year": year, 
+        "Traditional AUM": round(aum_bal), 
+        "Advice-Only": round(adv_bal)
+    })
 
 df_lines = pd.DataFrame(data)
 df_area = pd.DataFrame(area_data)
@@ -142,23 +149,27 @@ final_adv = df_lines[(df_lines["Year"] == horizon) & (df_lines["Type"] == "Advic
 savings = final_adv - final_aum
 
 st.markdown("---")
-# We use a single column now because CSS forces centering
 st.metric(label="Additional Wealth Retained", value=f"${savings:,.0f}")
 
-# 7. PROFESSIONAL CHART (Locked)
-# Layer 1: Area
+# 7. PROFESSIONAL CHART (Locked & Fixed Tooltips)
+# Layer 1: Area (Disabled Tooltip)
 area = alt.Chart(df_area).mark_area(opacity=0.15, color='#6366f1').encode(
     x=alt.X('Year', axis=alt.Axis(tickMinStep=2, grid=False)),
-    y=alt.Y('Traditional', axis=alt.Axis(format='$,.0f', title='Portfolio Value')),
-    y2='AdviceOnly'
+    y=alt.Y('Traditional AUM', axis=alt.Axis(format='$,.0f', title='Portfolio Value')),
+    y2='Advice-Only',
+    tooltip=[] # <--- THIS DISABLES THE "WRONG" HOVER POPUP
 )
 
-# Layer 2: Lines
+# Layer 2: Lines (Enabled Tooltip)
 lines = alt.Chart(df_lines).mark_line(strokeWidth=4).encode(
     x='Year',
     y='Portfolio Value',
     color=alt.Color('Type', scale=alt.Scale(domain=['Advice-Only', 'Traditional AUM'], range=['#6366f1', '#ca8a04']), legend=alt.Legend(orient="bottom", title=None)),
-    tooltip=[alt.Tooltip('Year'), alt.Tooltip('Portfolio Value', format='$,.0f'), alt.Tooltip('Type')]
+    tooltip=[
+        alt.Tooltip('Year'), 
+        alt.Tooltip('Portfolio Value', format='$,.0f'), 
+        alt.Tooltip('Type')
+    ]
 )
 
 # Combine & Lock Interaction
@@ -172,7 +183,7 @@ final_chart = (area + lines).properties(
     gridColor='#f1f5f9'
 ).configure_view(
     strokeWidth=0
-).interactive(bind_y=False, bind_x=False) # <--- THIS LOCKS THE SCROLL/ZOOM
+).interactive(bind_y=False, bind_x=False)
 
 st.altair_chart(final_chart, use_container_width=True)
 
