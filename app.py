@@ -9,12 +9,12 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. CUSTOM CSS (Professional Polish)
+# 2. CUSTOM CSS (The Polish)
 st.markdown("""
     <style>
         /* 1. CONTAINER WIDTH ADJUSTMENT */
         .block-container {
-            max-width: 1000px; /* Adjust this number to control width */
+            max-width: 1000px;
             padding-top: 2rem;
             padding-bottom: 3rem;
         }
@@ -32,15 +32,28 @@ st.markdown("""
         h3 { color: #334155; font-size: 1.2rem; font-weight: 600; margin-top: 20px; }
         p { color: #475569; font-size: 1rem; line-height: 1.6; }
         
-        /* 5. METRICS */
+        /* 5. METRIC ALIGNMENT (FORCE CENTER) */
         div[data-testid="stMetricValue"] {
             font-size: 4rem !important;
-            color: #10b981 !important;
+            color: #10b981 !important; /* Green */
             font-weight: 900;
             text-align: center;
+            width: 100%;
         }
         div[data-testid="stMetricLabel"] {
-            text-align: center; font-size: 1.1rem !important; color: #64748b !important;
+            text-align: center;
+            font-size: 1.1rem !important;
+            color: #64748b !important;
+            width: 100%;
+            justify-content: center;
+        }
+        div[data-testid="stMetric"] {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin: 0 auto;
         }
         
         /* 6. INPUTS */
@@ -49,10 +62,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 3. HEADER & EDUCATION
-# Centered Title
 st.markdown("<h1 style='text-align: center;'>Making the Switch?</h1>", unsafe_allow_html=True)
-
-# ---> ADDED SPACER HERE <---
 st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
 
 st.markdown("""
@@ -83,27 +93,22 @@ with col1:
 
 with col2:
     st.write("Time Horizon")
-    # Custom CSS hack to align the radio button nicely
     horizon = st.radio("Time Horizon", [10, 20, 30], index=1, horizontal=True, label_visibility="collapsed")
-    st.write("") # Visual spacer
+    st.write("") 
     include_reviews = st.checkbox("Include Annual Review Costs?", value=True)
 
 # 5. LOGIC ENGINE
-# Map selection to fee
 if "0.75%" in firm_type: trail = 0.0075
 elif "1.25%" in firm_type: trail = 0.0125
-else: trail = 0.01  # Default to 1.00%
+else: trail = 0.01
 
-# Assumptions
-growth_rate = 1.06      # 6% Market Return
-inflation = 1.02        # 2% Inflation
-plan_fee = 1000         # Triennial Plan Cost
-review_fee = 250        # Annual Review Cost
-hst_rate = 1.13         # 13% HST
+growth_rate = 1.06
+inflation = 1.02
+plan_fee = 1000
+review_fee = 250
+hst_rate = 1.13
 
-# Calculation Loop
 data = []
-# We need a separate list for the area chart (wide format)
 area_data = []
 
 aum_bal = balance
@@ -113,31 +118,22 @@ curr_rev_fee = review_fee
 
 for year in range(horizon + 1):
     if year > 0:
-        # 1. Growth
         aum_bal = aum_bal * growth_rate
         adv_bal = adv_bal * growth_rate
-        
-        # 2. AUM Fee (Percentage)
         aum_bal = aum_bal * (1 - trail)
         
-        # 3. Advice Fee (Flat + HST)
         if include_reviews:
             adv_bal -= (curr_rev_fee * hst_rate)
         if year % 3 == 0:
             adv_bal -= (curr_plan_fee * hst_rate)
             
-        # 4. Inflation on Fees
         curr_plan_fee *= inflation
         curr_rev_fee *= inflation
 
-    # Store for Line Chart (Long format)
     data.append({"Year": year, "Portfolio Value": round(aum_bal), "Type": "Traditional AUM"})
     data.append({"Year": year, "Portfolio Value": round(adv_bal), "Type": "Advice-Only"})
-    
-    # Store for Area Chart (Wide format)
     area_data.append({"Year": year, "Traditional": round(aum_bal), "AdviceOnly": round(adv_bal)})
 
-# 6. METRIC DISPLAY
 df_lines = pd.DataFrame(data)
 df_area = pd.DataFrame(area_data)
 
@@ -146,19 +142,18 @@ final_adv = df_lines[(df_lines["Year"] == horizon) & (df_lines["Type"] == "Advic
 savings = final_adv - final_aum
 
 st.markdown("---")
-m_c1, m_c2, m_c3 = st.columns([1,4,1])
-with m_c2:
-    st.metric(label="Additional Wealth Retained", value=f"${savings:,.0f}")
+# We use a single column now because CSS forces centering
+st.metric(label="Additional Wealth Retained", value=f"${savings:,.0f}")
 
-# 7. PROFESSIONAL CHART (Layered)
-# Layer 1: The Shaded Area (The Gap)
+# 7. PROFESSIONAL CHART (Locked)
+# Layer 1: Area
 area = alt.Chart(df_area).mark_area(opacity=0.15, color='#6366f1').encode(
     x=alt.X('Year', axis=alt.Axis(tickMinStep=2, grid=False)),
     y=alt.Y('Traditional', axis=alt.Axis(format='$,.0f', title='Portfolio Value')),
     y2='AdviceOnly'
 )
 
-# Layer 2: The Lines
+# Layer 2: Lines
 lines = alt.Chart(df_lines).mark_line(strokeWidth=4).encode(
     x='Year',
     y='Portfolio Value',
@@ -166,9 +161,9 @@ lines = alt.Chart(df_lines).mark_line(strokeWidth=4).encode(
     tooltip=[alt.Tooltip('Year'), alt.Tooltip('Portfolio Value', format='$,.0f'), alt.Tooltip('Type')]
 )
 
-# Combine
+# Combine & Lock Interaction
 final_chart = (area + lines).properties(
-    height=500, # Taller as requested
+    height=500, 
     background='white'
 ).configure_axis(
     labelFontSize=12,
@@ -177,11 +172,11 @@ final_chart = (area + lines).properties(
     gridColor='#f1f5f9'
 ).configure_view(
     strokeWidth=0
-).interactive()
+).interactive(bind_y=False, bind_x=False) # <--- THIS LOCKS THE SCROLL/ZOOM
 
 st.altair_chart(final_chart, use_container_width=True)
 
-# 8. TRANSPARENCY & FOOTER
+# 8. FOOTER
 with st.expander("📝 View Calculation Assumptions"):
     st.markdown(f"""
     This calculator uses conservative estimates to project long-term costs.
@@ -193,4 +188,3 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: ${review_fee:,.0f} (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
-
