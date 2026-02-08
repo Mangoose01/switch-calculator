@@ -70,7 +70,7 @@ with col1:
     firm_type = st.selectbox("Current Trailing Commission Structure", options=firm_options, index=0)
 
 with col2:
-    st.write("Time Horizon")
+    st.write("Time Horizon (Years)")
     horizon = st.radio("Time Horizon", [10, 20, 30], index=1, horizontal=True, label_visibility="collapsed")
     st.write("") 
     include_reviews = st.checkbox("Include Annual Review Costs?", value=True)
@@ -203,6 +203,7 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
+
 
 
 
