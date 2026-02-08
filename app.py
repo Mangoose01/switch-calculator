@@ -147,7 +147,7 @@ st.markdown("---")
 st.markdown(f"""
     <div style="text-align: center; margin-bottom: 20px;">
         <div style="font-size: 1.4rem; color: #64748b; font-weight: 600; margin-bottom: 5px;">
-            Additional Wealth Retained
+            Total Fee Savings
         </div>
         <div style="font-size: 4.5rem; color: #10b981; font-weight: 900; line-height: 1;">
             ${savings:,.0f}
@@ -203,6 +203,7 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
+
 
 
 
