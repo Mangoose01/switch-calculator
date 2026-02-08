@@ -63,8 +63,8 @@ col1, col2 = st.columns(2)
 with col1:
     balance = st.number_input("Investable Assets ($)", value=500000, step=10000)
     firm_options = [
-        "Most Common (1.00% - Common Bank Mutual Funds)",
-        "High (1.25% - Mainstream Brokers - it sometimes includes investment management)",
+        "Most Common (1.00% - Retail Bank Mutual Funds)",
+        "High (1.25% - Mainstream Full-Service Brokers)",
         "Low (0.75% - High Net Worth / Discounted Wealth Management)"
     ]
     firm_type = st.selectbox("Current Trailing Commission / Account Fee Structure", options=firm_options, index=0)
@@ -203,6 +203,7 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns. This is NOT financial advice.*
     """)
+
 
 
 
