@@ -38,7 +38,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 3. HEADER & EDUCATION
-st.markdown("<h1 style='text-align: center;'>Making the Switch?</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>Advice Fee Differential Calculator</h1>", unsafe_allow_html=True)
 st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
 
 st.markdown("""
@@ -203,6 +203,7 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
+
 
 
 
