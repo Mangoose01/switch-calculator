@@ -48,7 +48,7 @@ st.markdown("""
 """)
 
 st.info("""
-**About the tool belows:** This chart demonstrates the stark difference between the two models from a cost perspective over time, assuming the **exact same level of advice** is received. Use it to determine your "breakeven point", the moment where switching to an advice-only model starts putting significantly more money back in your pocket.
+**About the tool below:** This chart demonstrates the stark difference between the two models from a cost perspective over time, assuming the **exact same level of advice** is received. Use it to determine your "breakeven point", the moment where switching to an advice-only model starts putting significantly more money back in your pocket.
 
 It should be noted that the advice-only fees (financial plan and annual reviews) referenced in these calculations are reflective of non-complex financial plans, which the author estimates applies to ~85% of individuals seeking to build a financial plan. More complex scenarios involving corporations, foreign tax obligations, many rental properties, etc. would very likely result in higher advice-only costs. You can change the default advice fee in the calculations to be reflective of your circumstances and the corresponding advice-only pricing. See detailed assumptions made at the bottom of the page.
 
@@ -158,7 +158,7 @@ st.markdown(f"""
 # 7. PROFESSIONAL CHART (Locked & Fixed Tooltips)
 # Layer 1: Area (Disabled Tooltip)
 area = alt.Chart(df_area).mark_area(opacity=0.15, color='#6366f1').encode(
-    x=alt.X('Year', axis=alt.Axis(tickMinStep=2, grid=False)),
+    x=alt.X('Year', axis=alt.Axis(tickMinStep=2, grid=False, format="~s years")),
     y=alt.Y('Traditional AUM', axis=alt.Axis(format='$,.0f', title='Portfolio Value')),
     y2='Advice-Only',
     tooltip=[] 
@@ -203,6 +203,7 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
+
 
 
 
