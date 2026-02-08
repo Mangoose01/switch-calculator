@@ -158,7 +158,7 @@ st.markdown(f"""
 # 7. PROFESSIONAL CHART (Locked & Fixed Tooltips)
 # Layer 1: Area (Disabled Tooltip)
 area = alt.Chart(df_area).mark_area(opacity=0.15, color='#6366f1').encode(
-    x=alt.X('Year', axis=alt.Axis(tickMinStep=2, grid=False, format="~s years")),
+    x=alt.X('Year', axis=alt.Axis(tickMinStep=2, grid=False)),
     y=alt.Y('Traditional AUM', axis=alt.Axis(format='$,.0f', title='Portfolio Value')),
     y2='Advice-Only',
     tooltip=[] 
@@ -203,6 +203,7 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
+
 
 
 
