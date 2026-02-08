@@ -67,7 +67,7 @@ with col1:
         "High (1.25% - Mainstream Brokers - it sometimes includes investment management)",
         "Low (0.75% - High Net Worth / Discounted Wealth Management)"
     ]
-    firm_type = st.selectbox("Current Trailing Commission Structure", options=firm_options, index=0)
+    firm_type = st.selectbox("Current Trailing Commission / Account Fee Structure", options=firm_options, index=0)
 
 with col2:
     st.write("Time Horizon (Years)")
@@ -201,8 +201,9 @@ with st.expander("📝 View Calculation Assumptions"):
     * **Trailing Commissions:** Applied annually to the full account balance.
     * **Advice-Only Costs:** * Initial/Triennial Plan: **${plan_fee:,.0f}** (indexed to inflation) + 13% HST.
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
-    * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
+    * *Note: This is a projection for illustrative purposes and does not guarantee future returns. This is NOT financial advice.*
     """)
+
 
 
 
