@@ -42,17 +42,17 @@ st.markdown("<h1 style='text-align: center;'>Making the Switch?</h1>", unsafe_al
 st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
 
 st.markdown("""
-**What does "Making the Switch" mean?** Most Canadian investors pay for advice via **Assets Under Management (AUM)**. This means you pay a percentage of your portfolio (often 1% or more) every single year. As your wealth grows, your fee grows, even if the service stays the same.
+**What does "Making the Switch" mean?** Most Canadian investors pay for financial advice via **Assets Under Management (AUM)** (that's *in addition to* investment management fees, which is a whole other topic...). This means they pay a percentage of their portfolio (usually 1% or more) every single year specifically for financial planning advice. As the market goes up and their wealth increases, the fee grows, even if the level of advice and service stay the same.
 
-**The Advice-Only Model** treats financial planning like a professional service (like a CPA or Lawyer). You pay a flat fee for the advice you receive, decoupling the cost from the value of your portfolio and instead aligning it with the complexity of your situation.
+**The Advice-Only Model** (a.k.a. fee-only) treats financial planning like a professional service (like a CPA or Lawyer). You pay a flat fee for the advice you receive, decoupling the cost from the value of your portfolio and instead aligning it with the complexity of your situation.
 """)
 
 st.info("""
-**How this tool works:** This chart demonstrates the stark difference between the two models from a cost perspective over time, assuming the **exact same level of advice** is received. Use it to determine your "breakeven point", the moment where switching to an advice-only model starts putting significantly more money back in your pocket.
+**About the tool belows:** This chart demonstrates the stark difference between the two models from a cost perspective over time, assuming the **exact same level of advice** is received. Use it to determine your "breakeven point", the moment where switching to an advice-only model starts putting significantly more money back in your pocket.
 
-It should be noted that the advice-only fees (financial plan and annual reviews) referenced in these calculations are reflective of non-complex financial plans, which the author estimates applies to 85% of individuals seeking to build a financial plan. More complex scenarios involving corporations, foreign tax obligations, many rental properties, etc. would very likely result in higher advice-only costs. See detailed assumptions made at the bottom of the page.
+It should be noted that the advice-only fees (financial plan and annual reviews) referenced in these calculations are reflective of non-complex financial plans, which the author estimates applies to 85% of individuals seeking to build a financial plan. More complex scenarios involving corporations, foreign tax obligations, many rental properties, etc. would very likely result in higher advice-only costs. You can change the default advice fee in the calculations to be reflective of your circumstances and the corresponding advice-only pricing. See detailed assumptions made at the bottom of the page.
 
-I used a triennial structure for the financial plan update fees as it tends to be the industry standard for most clients. The annual meeting costs (which can be removed) are for regular recurring reviews.
+This chart uses a triennial structure for the financial plan update fees (an update every 3 years) as it tends to be the industry standard at financial institution and full brokerage firms. An annual meeting is however included (which is also an industry standard) although it is added as a default optional feature in the chart below.
 """)
 
 st.divider()
@@ -203,4 +203,5 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns.*
     """)
+
 
