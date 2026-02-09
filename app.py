@@ -61,7 +61,7 @@ st.divider()
 col1, col2 = st.columns(2)
 
 with col1:
-    balance = st.number_input("Investable Assets ($)", value=500000, step=10000)
+    balance = st.number_input("Investable Assets ($)", value=200000, step=10000)
     firm_options = [
         "Most Common (1.00% - Retail Bank Mutual Funds)",
         "High (1.25% - Mainstream Full-Service Brokers)",
@@ -203,6 +203,7 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns. This is NOT financial advice.*
     """)
+
 
 
 
