@@ -62,6 +62,9 @@ col1, col2 = st.columns(2)
 
 with col1:
     balance = st.number_input("Investable Assets ($)", value=200000, step=10000)
+    # --- NEW: ANNUAL CONTRIBUTION INPUT ---
+    annual_contribution = st.number_input("Annual Contribution ($)", value=0, step=1000, help="Amount added to your investments at the start of each year.")
+    
     firm_options = [
         "Most Common (1.00% - Retail Bank Mutual Funds)",
         "High (1.25% - Mainstream Full-Service Brokers)",
@@ -75,8 +78,7 @@ with col2:
     st.write("") 
     include_reviews = st.checkbox("Include Annual Review Costs?", value=True)
 
-# --- NEW: CUSTOM FEE INPUTS ---
-# We use an expander to keep the UI clean, but allow customization if clicked.
+# CUSTOM FEE INPUTS
 with st.expander("🔧 Customize Advice-Only Fees (Click to Edit)"):
     f_col1, f_col2 = st.columns(2)
     with f_col1:
@@ -89,7 +91,7 @@ if "0.75%" in firm_type: trail = 0.0075
 elif "1.25%" in firm_type: trail = 0.0125
 else: trail = 0.01
 
-# --- UPDATED CONSTANTS (Conservative 5% Growth) ---
+# UPDATED CONSTANTS
 growth_rate = 1.05       # 5% Growth
 inflation = 1.025        # 2.5% Inflation on fees
 hst_rate = 1.13          # 13% HST
@@ -99,11 +101,15 @@ area_data = []
 
 aum_bal = balance
 adv_bal = balance
-curr_plan_fee = plan_fee # Takes value from the new input
-curr_rev_fee = review_fee # Takes value from the new input
+curr_plan_fee = plan_fee 
+curr_rev_fee = review_fee 
 
 for year in range(horizon + 1):
     if year > 0:
+        # --- NEW: ADD CONTRIBUTIONS BEFORE GROWTH ---
+        aum_bal += annual_contribution
+        adv_bal += annual_contribution
+        
         # 1. Growth
         aum_bal = aum_bal * growth_rate
         adv_bal = adv_bal * growth_rate
@@ -112,13 +118,13 @@ for year in range(horizon + 1):
         aum_bal = aum_bal * (1 - trail)
         
         # 3. Advice Fee deduction (Flat Fees + HST)
-        if include_reviews:
-            # Annual Review Fee (Every Year)
-            adv_bal -= (curr_rev_fee * hst_rate)
-            
         # Triennial Plan Fee (Year 1, 4, 7...)
         if (year - 1) % 3 == 0:
             adv_bal -= (curr_plan_fee * hst_rate)
+            
+        # Annual Review Fee (Off Years: 2, 3, 5, 6...)
+        elif include_reviews:
+            adv_bal -= (curr_rev_fee * hst_rate)
             
         # 4. Inflation Adjustment
         curr_plan_fee *= inflation
@@ -192,26 +198,17 @@ final_chart = (area + lines).properties(
 st.altair_chart(final_chart, use_container_width=True)
 
 # 8. FOOTER
-# Updated to use the variables directly from the inputs
+# --- NEW: DYNAMIC CONTRIBUTION TEXT ---
+contrib_text = f"* **Annual Contribution:** **${annual_contribution:,.0f}** added to the portfolio at the beginning of each year." if annual_contribution > 0 else "* **Annual Contribution:** **$0**."
+
 with st.expander("📝 View Calculation Assumptions"):
     st.markdown(f"""
     This calculator uses conservative estimates to project long-term costs.
     * **Market Growth:** {round((growth_rate-1)*100)}% annually (compounded).
-    * **Inflation:** {round((inflation-1)*100)}% annually (applied to Advice fees).
+    * **Inflation:** {round((inflation-1)*100, 1)}% annually (applied to Advice fees).
+    {contrib_text}
     * **Trailing Commissions:** Applied annually to the full account balance.
     * **Advice-Only Costs:** * Initial/Triennial Plan: **${plan_fee:,.0f}** (indexed to inflation) + 13% HST.
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns. This is NOT financial advice.*
     """)
-
-
-
-
-
-
-
-
-
-
-
-
