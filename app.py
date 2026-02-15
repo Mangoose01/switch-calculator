@@ -50,7 +50,7 @@ st.markdown("""
 st.info("""
 **About the tool below:** This chart demonstrates the stark difference between the two models from a cost perspective over time, assuming the **exact same level of advice** is received. Use it to determine your "breakeven point", the moment where switching to an advice-only model starts putting significantly more money back in your pocket.
 
-It should be noted that the advice-only fees (financial plan and annual reviews) referenced in these calculations are reflective of non-complex financial plans, which the author estimates applies to ~85% of individuals seeking to build a financial plan. More complex scenarios involving corporations, foreign tax obligations, many rental properties, etc. would very likely result in higher advice-only costs. You can change the default advice fee in the calculations to be reflective of your circumstances and the corresponding advice-only pricing. See detailed assumptions made at the bottom of the page.
+It should be noted that the advice-only fees (financial plan and annual reviews) referenced in these calculations are reflective of the median fee-only price for a "non-complex plan", which the author estimates applies to ~85% of individuals seeking to build a financial plan. More complex scenarios involving corporations, foreign tax obligations, trust, large rental property portfolios, etc. would very likely result in higher advice-only costs. You can change the default advice fee in the calculations to be reflective of your circumstances and the corresponding advice-only pricing. See detailed assumptions made at the bottom of the page.
 
 This chart uses a triennial structure for the financial plan update fees (an update every 3 years) as it tends to be the industry standard at financial institution and full-service brokerage firms. The annual review fee was made optional in the chart, but should be left checked if the goal is to compare the same level of service as would be received from a traditional avisor.
 """)
@@ -212,4 +212,5 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns. This is NOT financial advice.*
     """)
+
 
