@@ -82,7 +82,7 @@ with col2:
 with st.expander("🔧 Customize Advice-Only Fees (Click to Edit)"):
     f_col1, f_col2 = st.columns(2)
     with f_col1:
-        plan_fee = st.number_input("Triennial Plan Fee ($)", value=1000, step=100, help="The cost of the initial plan and the update every 3 years.")
+        plan_fee = st.number_input("Triennial Plan Fee ($)", value=2500, step=100, help="The cost of the initial plan and the update every 3 years.")
     with f_col2:
         review_fee = st.number_input("Annual Review Fee ($)", value=250, step=50, help="The cost of the optional maintenance review in off-years.")
 
@@ -212,3 +212,4 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns. This is NOT financial advice.*
     """)
+
