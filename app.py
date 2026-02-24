@@ -63,7 +63,7 @@ col1, col2 = st.columns(2)
 with col1:
     balance = st.number_input("Investable Assets ($)", value=200000, step=10000)
     # --- NEW: ANNUAL CONTRIBUTION INPUT ---
-    annual_contribution = st.number_input("Annual Contribution ($)", value=0, step=1000, help="Amount added to your investments at the start of each year.")
+    annual_contribution = st.number_input("Annual Contribution ($)", value=0, step=1000, help="Amount added to your investments at the start of each year. Use negative values to model withdrawals.")
     
     firm_options = [
         "Most Common (1.00% - Retail Bank Mutual Funds)",
@@ -212,5 +212,6 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns. This is NOT financial advice.*
     """)
+
 
 
