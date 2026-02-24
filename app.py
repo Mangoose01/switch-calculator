@@ -42,7 +42,7 @@ st.markdown("<h1 style='text-align: center;'>Advice Fee Differential Calculator<
 st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
 
 st.markdown("""
-**What does "Making the Switch" mean?** Most Canadian investors pay for financial advice via **Assets Under Management (AUM)** (that's *in addition to* investment management fees, which is a whole other topic...). This means they pay a percentage of their portfolio (usually 1% or more) every single year specifically for financial planning advice. As the market goes up and their wealth increases, the fee grows, even if the level of advice and service stay the same.
+**What does "Making the Switch" mean?** Most Canadian investors pay for financial advice via **Assets Under Management (AUM)** (that is *in addition to* investment management fees, which is a whole other topic...). This means they pay a percentage of their portfolio (usually 1% or more) every single year specifically for financial planning advice. As the market goes up and their wealth increases, the fee grows, even if the level of advice and service stay the same.
 
 **The Advice-Only Model** (a.k.a. fee-only) treats financial planning like a professional service (like a CPA or Lawyer). You pay a flat fee for the advice you receive, decoupling the cost from the value of your portfolio and instead aligning it with the complexity of your situation.
 """)
@@ -52,7 +52,7 @@ st.info("""
 
 It should be noted that the advice-only fees (financial plan and annual reviews) referenced in these calculations are reflective of the median fee-only price for a "non-complex plan", which the author estimates applies to ~85% of individuals seeking to build a financial plan. More complex scenarios involving corporations, foreign tax obligations, trust, large rental property portfolios, etc. would very likely result in higher advice-only costs. You can change the default advice fee in the calculations to be reflective of your circumstances and the corresponding advice-only pricing. See detailed assumptions made at the bottom of the page.
 
-This chart uses a triennial structure for the financial plan update fees (an update every 3 years) as it tends to be the industry standard at financial institution and full-service brokerage firms. The annual review fee was made optional in the chart, but should be left checked if the goal is to compare the same level of service as would be received from a traditional avisor.
+This chart uses a triennial structure for the financial plan update fees (an update every 3 years) as it tends to be the industry standard at financial institution and full-service brokerage firms. The annual review fee was made optional in the chart, but should be left checked if the goal is to compare the same level of service as would be received from a traditional advisor.
 """)
 
 st.divider()
@@ -62,8 +62,8 @@ col1, col2 = st.columns(2)
 
 with col1:
     balance = st.number_input("Investable Assets ($)", value=200000, step=10000)
-    # --- NEW: ANNUAL CONTRIBUTION INPUT ---
-    annual_contribution = st.number_input("Annual Contribution ($)", value=0, step=1000, help="Amount added to your investments at the start of each year. Use negative values to model withdrawals.")
+    # --- UPDATED: LABEL AND TOOLTIP ---
+    annual_contribution = st.number_input("Annual Contribution / Withdrawal ($)", value=0, step=1000, help="Amount added to your investments at the start of each year. Use negative values to model annual withdrawals for retirement.")
     
     firm_options = [
         "Most Common (1.00% - Retail Bank Mutual Funds)",
@@ -106,9 +106,13 @@ curr_rev_fee = review_fee
 
 for year in range(horizon + 1):
     if year > 0:
-        # --- NEW: ADD CONTRIBUTIONS BEFORE GROWTH ---
+        # --- NEW: ADD CONTRIBUTIONS/WITHDRAWALS BEFORE GROWTH ---
         aum_bal += annual_contribution
         adv_bal += annual_contribution
+        
+        # Keep balances from dropping below zero due to heavy withdrawals
+        aum_bal = max(0, aum_bal)
+        adv_bal = max(0, adv_bal)
         
         # 1. Growth
         aum_bal = aum_bal * growth_rate
@@ -125,6 +129,10 @@ for year in range(horizon + 1):
         # Annual Review Fee (Off Years: 2, 3, 5, 6...)
         elif include_reviews:
             adv_bal -= (curr_rev_fee * hst_rate)
+            
+        # Keep balances from dropping below zero due to flat fees
+        aum_bal = max(0, aum_bal)
+        adv_bal = max(0, adv_bal)
             
         # 4. Inflation Adjustment
         curr_plan_fee *= inflation
@@ -198,8 +206,13 @@ final_chart = (area + lines).properties(
 st.altair_chart(final_chart, use_container_width=True)
 
 # 8. FOOTER
-# --- NEW: DYNAMIC CONTRIBUTION TEXT ---
-contrib_text = f"* **Annual Contribution:** **${annual_contribution:,.0f}** added to the portfolio at the beginning of each year." if annual_contribution > 0 else "* **Annual Contribution:** **$0**."
+# --- NEW: DYNAMIC CONTRIBUTION/WITHDRAWAL TEXT ---
+if annual_contribution > 0:
+    contrib_text = f"* **Annual Contribution:** **${annual_contribution:,.0f}** added to the portfolio at the beginning of each year."
+elif annual_contribution < 0:
+    contrib_text = f"* **Annual Withdrawal:** **${abs(annual_contribution):,.0f}** withdrawn from the portfolio at the beginning of each year."
+else:
+    contrib_text = "* **Annual Contribution:** **$0**."
 
 with st.expander("📝 View Calculation Assumptions"):
     st.markdown(f"""
@@ -212,6 +225,3 @@ with st.expander("📝 View Calculation Assumptions"):
         * Annual Review: **${review_fee:,.0f}** (indexed to inflation, optional) + 13% HST.
     * *Note: This is a projection for illustrative purposes and does not guarantee future returns. This is NOT financial advice.*
     """)
-
-
-
